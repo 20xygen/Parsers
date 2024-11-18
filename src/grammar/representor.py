@@ -1,5 +1,5 @@
-from grammar import Terminal, Grammar, NonTerminal, Rule, GrammarSymbol
-from typing import Dict, Union, Optional, List, Set, Tuple
+from src.grammar.grammar import Terminal, NonTerminal, GrammarSymbol
+from typing import Dict, Union, Optional, Set
 import string
 
 
@@ -100,5 +100,3 @@ class Representor:
             return self.as_non_terminal(symbol)
         else:
             raise ValueError(f"Symbol {symbol} is invalid.")
-
-

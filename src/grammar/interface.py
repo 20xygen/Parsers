@@ -1,7 +1,7 @@
-from typing import Set, List, Dict
-from grammar import Grammar, Rule, Terminal, NonTerminal
-from representor import Representor, valid_terminals, valid_non_terminals, valid_symbols
-from representor import valid_non_terminals_list, valid_terminals_list
+from typing import Set, Dict
+from src.grammar.grammar import Grammar, Rule
+from src.grammar.representor import Representor, valid_non_terminals, valid_symbols
+from src.grammar.representor import valid_non_terminals_list, valid_terminals_list
 
 
 class NaiveRule:
