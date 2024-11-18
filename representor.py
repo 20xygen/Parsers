@@ -3,13 +3,14 @@ from typing import Dict, Union, Optional, List, Set, Tuple
 import string
 
 
-valid_terminals = set()
-valid_terminals += set(string.ascii_lowercase.strip())
-valid_terminals += set(string.digits.strip())
-valid_terminals += set("()+-*/".strip())
+valid_terminals_list = list()
+valid_terminals_list += string.ascii_lowercase.strip()
+valid_terminals_list += string.digits.strip()
+valid_terminals_list += "()+-*/".strip()
+valid_non_terminals_list = list(string.ascii_uppercase.strip())
 
-valid_non_terminals = set(string.ascii_uppercase.strip())
-
+valid_terminals = set(valid_terminals_list)
+valid_non_terminals = set(valid_non_terminals_list)
 valid_symbols = valid_terminals | valid_non_terminals
 
 
@@ -29,10 +30,16 @@ class Representor:
 
     def fill(self, data: Set[str]):
         for symbol in data:
-            self.add(symbol)
+            self.auto_add(symbol)
+
+    def terminal_symbols(self) -> Set[str]:
+        return set(self.symbol_to_terminal.keys())
+
+    def non_terminal_symbols(self) -> Set[str]:
+        return set(self.symbol_to_non_terminal.keys())
 
     def symbols(self) -> Set[str]:
-        return set(self.symbol_to_terminal.keys()).union(self.symbol_to_non_terminal.keys())
+        return self.terminal_symbols() | self.non_terminal_symbols()
 
     def terminals(self) -> Set[Terminal]:
         return set(self.terminal_to_symbol.keys())
@@ -50,7 +57,7 @@ class Representor:
         else:
             raise TypeError(f"Invalid pair of arguments")
 
-    def add(self, symbol: str) -> GrammarSymbol:
+    def auto_add(self, symbol: str) -> GrammarSymbol:
         if symbol in valid_terminals:
             if symbol in self.symbols():
                 return self.symbol_to_terminal[symbol]
@@ -66,8 +73,19 @@ class Representor:
         else:
             raise ValueError(f"Symbol {symbol} is invalid.")
 
-    def as_symbol(self, term: Terminal) -> str:
+    def as_terminal_symbol(self, term: Terminal) -> str:
         return self.terminal_to_symbol[term]
+
+    def as_non_terminal_symbol(self, non: NonTerminal) -> str:
+        return self.non_terminal_to_symbol[non]
+
+    def as_symbol(self, obj: GrammarSymbol) -> str:
+        if isinstance(obj, NonTerminal):
+            return self.as_non_terminal_symbol(obj)
+        elif isinstance(obj, Terminal):
+            return self.as_terminal_symbol(obj)
+        else:
+            raise TypeError(f"Invalid argument type: {type(obj)}.")
 
     def as_terminal(self, symbol: str) -> Terminal:
         return self.symbol_to_terminal[symbol]
