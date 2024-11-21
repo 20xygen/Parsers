@@ -1,0 +1,261 @@
+{
+  "correct_bracket_sequence": {
+    "grammar": {
+      "non_terminals": [
+        "S"
+      ],
+      "terminals": [
+        "(",
+        ")"
+      ],
+      "start": "S",
+      "rules": [
+        {
+          "left": "S",
+          "right": "(S)S"
+        },
+        {
+          "left": "S",
+          "right": ""
+        }
+      ]
+    },
+    "grammar_class": "Context-free",
+    "tests": [
+      {
+        "word": "()",
+        "result": true
+      },
+      {
+        "word": "((()))",
+        "result": true
+      },
+      {
+        "word": "(())(()())",
+        "result": true
+      },
+      {
+        "word": "",
+        "result": true
+      },
+      {
+        "word": "(",
+        "result": false
+      },
+      {
+        "word": ")(",
+        "result": false
+      },
+      {
+        "word": "())(",
+        "result": false
+      }
+    ]
+  },
+  "palindrome": {
+    "grammar": {
+      "non_terminals": [
+        "S"
+      ],
+      "terminals": [
+        "a",
+        "b"
+      ],
+      "start": "S",
+      "rules": [
+        {
+          "left": "S",
+          "right": "aSa"
+        },
+        {
+          "left": "S",
+          "right": "bSb"
+        },
+        {
+          "left": "S",
+          "right": ""
+        },
+        {
+          "left": "S",
+          "right": "a"
+        },
+        {
+          "left": "S",
+          "right": "b"
+        }
+      ]
+    },
+    "grammar_class": "Context-free",
+    "tests": [
+      {
+        "word": "aa",
+        "result": true
+      },
+      {
+        "word": "aba",
+        "result": true
+      },
+      {
+        "word": "abaaba",
+        "result": true
+      },
+      {
+        "word": "",
+        "result": true
+      },
+      {
+        "word": "ab",
+        "result": false
+      },
+      {
+        "word": "abab",
+        "result": false
+      },
+      {
+        "word": "aabb",
+        "result": false
+      }
+    ]
+  },
+  "arithmetic_expression": {
+    "grammar": {
+      "non_terminals": [
+        "E",
+        "F",
+        "T"
+      ],
+      "terminals": [
+        "a",
+        "+",
+        "*",
+        "(",
+        ")"
+      ],
+      "start": "E",
+      "rules": [
+        {
+          "left": "E",
+          "right": "E+T"
+        },
+        {
+          "left": "E",
+          "right": "T"
+        },
+        {
+          "left": "T",
+          "right": "T*F"
+        },
+        {
+          "left": "T",
+          "right": "F"
+        },
+        {
+          "left": "F",
+          "right": "(E)"
+        },
+        {
+          "left": "F",
+          "right": "a"
+        }
+      ]
+    },
+    "grammar_class": "Context-free",
+    "tests": [
+      {
+        "word": "a+a*a",
+        "result": true
+      },
+      {
+        "word": "a",
+        "result": true
+      },
+      {
+        "word": "a*a+(a*a+a)*a",
+        "result": true
+      },
+      {
+        "word": "(a+a)*(a+a*a)",
+        "result": true
+      },
+      {
+        "word": "aa",
+        "result": false
+      },
+      {
+        "word": "a+()",
+        "result": false
+      },
+      {
+        "word": "a**(a+a)",
+        "result": false
+      }
+    ]
+  },
+  "strange_grammar": {
+    "grammar": {
+      "non_terminals": [
+        "S",
+        "A",
+        "B"
+      ],
+      "terminals": [
+        "a",
+        "b"
+      ],
+      "start": "S",
+      "rules": [
+        {
+          "left": "S",
+          "right": "AB"
+        },
+        {
+          "left": "A",
+          "right": "Aa"
+        },
+        {
+          "left": "A",
+          "right": "bB"
+        },
+        {
+          "left": "B",
+          "right": "a"
+        },
+        {
+          "left": "B",
+          "right": "Sb"
+        }
+      ]
+    },
+    "grammar_class": "Context-free",
+    "tests": [
+      {
+        "word": "baabaab",
+        "result": true
+      },
+      {
+        "word": "bbaaaba",
+        "result": true
+      },
+      {
+        "word": "babaabb",
+        "result": true
+      },
+      {
+        "word": "baa",
+        "result": true
+      },
+      {
+        "word": "ab",
+        "result": false
+      },
+      {
+        "word": "",
+        "result": false
+      },
+      {
+        "word": "bab",
+        "result": false
+      }
+    ]
+  }
+}

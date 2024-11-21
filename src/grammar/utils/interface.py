@@ -1,7 +1,8 @@
 from typing import Set, Dict
 from src.grammar.grammar import Grammar, Rule
-from src.grammar.representor import Representor, valid_non_terminals, valid_symbols
-from src.grammar.representor import valid_non_terminals_list, valid_terminals_list
+from src.grammar.utils.representor import Representor, valid_non_terminals, valid_symbols
+from src.grammar.utils.representor import valid_non_terminals_list, valid_terminals_list
+from src.grammar.errors import InvalidTerminal, InvalidNonTerminal, InvalidGrammarSymbol
 
 
 class NaiveRule:
@@ -10,9 +11,9 @@ class NaiveRule:
 
     def __init__(self, left: str, right: str):
         if left not in valid_non_terminals:
-            raise ValueError(f"Non-terminal symbol {left} is invalid.")
+            raise InvalidNonTerminal(f"Non-terminal symbol {left} is invalid.")
         if any([sym not in valid_symbols for sym in right]):
-            raise ValueError(f"Symbol {left} is invalid.")
+            raise InvalidGrammarSymbol(f"Symbol {left} is invalid.")
         self.left = left
         self.right = right
 

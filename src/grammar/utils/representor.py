@@ -1,6 +1,7 @@
 from src.grammar.grammar import Terminal, NonTerminal, GrammarSymbol
 from typing import Dict, Union, Optional, Set
 import string
+from src.grammar.errors import InvalidGrammarSymbol
 
 
 valid_terminals_list = list()
@@ -55,7 +56,7 @@ class Representor:
             self.symbol_to_non_terminal[symbol] = obj
             self.non_terminal_to_symbol[obj] = symbol
         else:
-            raise TypeError(f"Invalid pair of arguments")
+            raise InvalidGrammarSymbol(f"Invalid pair of arguments")
 
     def auto_add(self, symbol: str) -> GrammarSymbol:
         if symbol in valid_terminals:
@@ -71,7 +72,7 @@ class Representor:
             self.add(symbol, non)
             return non
         else:
-            raise ValueError(f"Symbol {symbol} is invalid.")
+            raise InvalidGrammarSymbol(f"Symbol {symbol} is invalid.")
 
     def as_terminal_symbol(self, term: Terminal) -> str:
         return self.terminal_to_symbol[term]
@@ -99,4 +100,4 @@ class Representor:
         elif symbol in valid_non_terminals:
             return self.as_non_terminal(symbol)
         else:
-            raise ValueError(f"Symbol {symbol} is invalid.")
+            raise InvalidGrammarSymbol(f"Symbol {symbol} is invalid.")

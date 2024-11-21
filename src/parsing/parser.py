@@ -1,7 +1,7 @@
 from src.grammar.grammar import Grammar
 
 
-valid_language_classes = [
+valid_grammar_classes = [
     "Context-free",
     "LR(k)",
     "LR(1)",
@@ -9,16 +9,16 @@ valid_language_classes = [
 ]
 
 
-class LanguageClass:
+class GrammarClass:
     category: int
 
     def __init__(self, class_name: str):
-        if class_name not in valid_language_classes:
-            raise ValueError(f"Language class {class_name} is not valid.")
-        self.category = valid_language_classes.index(class_name)
+        if class_name not in valid_grammar_classes:
+            raise ValueError(f"Grammar class {class_name} is not valid.")
+        self.category = valid_grammar_classes.index(class_name)
 
     def __str__(self):
-        return valid_language_classes[self.category]
+        return valid_grammar_classes[self.category]
 
     def __le__(self, other):
         return self.category <= other.category
@@ -26,12 +26,19 @@ class LanguageClass:
     def __ge__(self, other):
         return self.category >= other.category
 
+    def __str__(self):
+        return valid_grammar_classes[self.category]
+
 
 class Parser:
-    language_class: LanguageClass
+    grammar_class: GrammarClass
 
-    def fit(self, grammar: Grammar):
+    def fit(self, grammar: Grammar) -> None:
         pass
 
     def predict(self, word: str) -> bool:
         pass
+
+
+class GrammarClassError(Exception):
+    pass

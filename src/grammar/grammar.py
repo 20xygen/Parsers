@@ -22,7 +22,7 @@ class Rule:
         self.right = right.copy()  # non-deep copy
 
 
-class Grammar:
+class Grammar:  # Context free
     non_terminals: Set[NonTerminal]
     terminals: Set[Terminal]
     start: NonTerminal
