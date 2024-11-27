@@ -101,3 +101,13 @@ class Representor:
             return self.as_non_terminal(symbol)
         else:
             raise InvalidGrammarSymbol(f"Symbol {symbol} is invalid.")
+
+    def is_known(self, obj: Union[GrammarSymbol, str]) -> bool:
+        if isinstance(obj, Terminal):
+            return obj in self.terminals()
+        elif isinstance(obj, NonTerminal):
+            return obj in self.non_terminals()
+        elif isinstance(obj, str):
+            return obj in self.symbols()
+        else:
+            raise ValueError(f"Invalid argument type: {type(obj)}.")

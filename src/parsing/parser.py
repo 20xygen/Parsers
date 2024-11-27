@@ -1,4 +1,9 @@
-from src.grammar.grammar import Grammar
+from src.grammar.grammar import Grammar, Terminal
+from typing import List, Optional
+
+from src.grammar.utils import representor
+from src.grammar.utils.interface import NaiveGrammar, naive_grammar_to_grammar
+from src.grammar.utils.representor import Representor
 
 
 valid_grammar_classes = [
@@ -36,9 +41,44 @@ class Parser:
     def fit(self, grammar: Grammar) -> None:
         pass
 
-    def predict(self, word: str) -> bool:
+    def predict(self, word: List[Terminal]) -> bool:
         pass
 
 
 class GrammarClassError(Exception):
     pass
+
+
+class ParserError(Exception):
+    pass
+
+
+class NaiveParser:  # Facade
+    parser: Parser
+    representor: Optional[Representor]
+
+    def __init__(self, parser: Parser):
+        self.parser = parser
+        self.representor = None
+
+    def translate(self, word: str) -> List[Terminal]:
+        if self.representor is None:
+            raise ParserError("Representor is not initialized.")
+        translated = []
+        for symbol in word:
+            if not self.representor.is_known(symbol):
+                term = Terminal()
+                self.representor.add(symbol, term)
+            else:
+                term = self.representor.as_terminal(symbol)
+            translated.append(term)
+        return translated
+
+    def fit(self, naive: NaiveGrammar) -> None:
+        grammar, representor = naive_grammar_to_grammar(naive)
+        self.representor = representor
+        self.representor = self.parser.fit(grammar)
+
+    def predict(self, word: str) -> bool:
+        translated = self.translate(word)
+        return self.parser.predict(translated)

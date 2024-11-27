@@ -25,7 +25,7 @@ naive_grammar = NaiveGrammar({'S'}, {'(', ')'}, 'S', {brackets_rule, epsilon_rul
 print_naive_grammar(naive_grammar)  # you can also print a naive one
 print()
 
-grammar = naive_grammar_to_grammar(naive_grammar)
+grammar, _ = naive_grammar_to_grammar(naive_grammar)
 
 print_grammar(grammar)  # non-naive one will differ
 print()
@@ -33,7 +33,7 @@ print()
 
 # Create grammar by entering
 
-# grammar = input_grammar()
-
+# grammar, _ = input_grammar()
+#
 # print()
 # print_grammar(grammar)

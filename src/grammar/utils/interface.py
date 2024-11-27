@@ -1,4 +1,4 @@
-from typing import Set, Dict
+from typing import Set, Dict, Tuple
 from src.grammar.grammar import Grammar, Rule
 from src.grammar.utils.representor import Representor, valid_non_terminals, valid_symbols
 from src.grammar.utils.representor import valid_non_terminals_list, valid_terminals_list
@@ -43,7 +43,7 @@ def input_naive_grammar() -> NaiveGrammar:
     return NaiveGrammar(non_terminals, terminals, start, rules)
 
 
-def naive_grammar_to_grammar(naive: NaiveGrammar) -> Grammar:
+def naive_grammar_to_grammar(naive: NaiveGrammar) -> Tuple[Grammar, Representor]:
     rep = Representor(naive.terminals | naive.non_terminals)
     start = rep.as_non_terminal(naive.start)
     non_terminals = rep.non_terminals()
@@ -53,10 +53,10 @@ def naive_grammar_to_grammar(naive: NaiveGrammar) -> Grammar:
         left = rep.as_non_terminal(rule.left)
         right = list([rep.as_grammar_symbol(sym) for sym in rule.right])  # empty if right is an epsilon
         rules.add(Rule(left, right))
-    return Grammar(non_terminals, terminals, start, rules)
+    return Grammar(non_terminals, terminals, start, rules), rep
 
 
-def input_grammar() -> Grammar:
+def input_grammar() -> Tuple[Grammar, Representor]:
     naive = input_naive_grammar()
     return naive_grammar_to_grammar(naive)
 
