@@ -1,7 +1,7 @@
-from typing import Set, Dict, Tuple
+from typing import Set, Dict, Tuple, Optional
 from src.grammar.grammar import Grammar, Rule
-from src.grammar.utils.representor import Representor, valid_non_terminals, valid_symbols
-from src.grammar.utils.representor import valid_non_terminals_list, valid_terminals_list
+from src.grammar.utility.representor import Representor, valid_non_terminals, valid_symbols
+from src.grammar.utility.representor import valid_non_terminals_list, valid_terminals_list
 from src.grammar.errors import InvalidTerminal, InvalidNonTerminal, InvalidGrammarSymbol
 
 
@@ -51,7 +51,7 @@ def naive_grammar_to_grammar(naive: NaiveGrammar) -> Tuple[Grammar, Representor]
     rules: Set[Rule] = set()
     for rule in naive.rules:
         left = rep.as_non_terminal(rule.left)
-        right = list([rep.as_grammar_symbol(sym) for sym in rule.right])  # empty if right is an epsilon
+        right = tuple([rep.as_grammar_symbol(sym) for sym in rule.right])  # empty if right is an epsilon
         rules.add(Rule(left, right))
     return Grammar(non_terminals, terminals, start, rules), rep
 
@@ -61,20 +61,21 @@ def input_grammar() -> Tuple[Grammar, Representor]:
     return naive_grammar_to_grammar(naive)
 
 
-def grammar_to_naive_grammar(grammar: Grammar) -> NaiveGrammar:
-    rep = Representor()
+def grammar_to_naive_grammar(grammar: Grammar, rep: Optional[Representor] = None) -> NaiveGrammar:
+    if rep is None:
+        rep = Representor()
 
-    prepared_non_terminals = list(grammar.non_terminals)
-    prepared_non_terminals.remove(grammar.start)
-    prepared_valid_non_terminals_list = valid_non_terminals_list.copy()
-    prepared_valid_non_terminals_list.remove('S')
-    rep.add('S', grammar.start)
-    for sym, non in zip(prepared_valid_non_terminals_list, prepared_non_terminals):
-        rep.add('S', non)
+        prepared_non_terminals = list(grammar.non_terminals)
+        prepared_non_terminals.remove(grammar.start)
+        prepared_valid_non_terminals_list = valid_non_terminals_list.copy()
+        prepared_valid_non_terminals_list.remove('S')
+        rep.add('S', grammar.start)
+        for sym, non in zip(prepared_valid_non_terminals_list, prepared_non_terminals):
+            rep.add('S', non)
 
-    prepared_terminals = list(grammar.terminals)
-    for sym, term in zip(valid_terminals_list, prepared_terminals):
-        rep.add(sym, term)
+        prepared_terminals = list(grammar.terminals)
+        for sym, term in zip(valid_terminals_list, prepared_terminals):
+            rep.add(sym, term)
 
     rules = set()
     for rule in grammar.rules:

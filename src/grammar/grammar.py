@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Tuple
 
 
 class GrammarSymbol:
@@ -15,11 +15,17 @@ class NonTerminal(GrammarSymbol):
 
 class Rule:
     left: NonTerminal
-    right: List[GrammarSymbol]
+    right: Tuple[GrammarSymbol, ...]
 
-    def __init__(self, left: NonTerminal, right: List[GrammarSymbol]):
+    def __init__(self, left: NonTerminal, right: Tuple[GrammarSymbol, ...]):
         self.left = left
-        self.right = right.copy()  # non-deep copy
+        self.right = right
+
+    def __eq__(self, other) -> bool:
+        return self.left == other.left and self.right == other.right
+
+    def __hash__(self) -> int:
+        return hash((self.left, self.right))
 
 
 class Grammar:  # Context free

@@ -15,6 +15,18 @@ valid_non_terminals = set(valid_non_terminals_list)
 valid_symbols = valid_terminals | valid_non_terminals
 
 
+class RepresentorError(Exception):
+    pass
+
+
+class RepresentorTypeError(RepresentorError, TypeError):
+    pass
+
+
+class RepresentorValueError(RepresentorError, ValueError):
+    pass
+
+
 class Representor:
     symbol_to_terminal: Dict[str, Terminal]
     terminal_to_symbol: Dict[Terminal, str]
@@ -58,21 +70,52 @@ class Representor:
         else:
             raise InvalidGrammarSymbol(f"Invalid pair of arguments")
 
-    def auto_add(self, symbol: str) -> GrammarSymbol:
-        if symbol in valid_terminals:
-            if symbol in self.symbols():
-                return self.symbol_to_terminal[symbol]
-            term = Terminal()
-            self.add(symbol, term)
-            return term
-        elif symbol in valid_non_terminals:
-            if symbol in self.symbols():
-                return self.symbol_to_non_terminal[symbol]
-            non = NonTerminal()
-            self.add(symbol, non)
-            return non
+    def get_available_non_terminal_symbol(self) -> Optional[str]:
+        for non in valid_non_terminals_list:
+            if non not in self.non_terminal_symbols():
+                return non
+        return None
+
+    def get_available_terminal_symbol(self) -> Optional[str]:
+        for term in valid_terminals_list:
+            if term not in self.terminal_symbols():
+                return term
+        return None
+
+    def auto_add(self, obj: Union[str, GrammarSymbol]) -> Union[GrammarSymbol, str]:
+        if isinstance(obj, str):
+            if obj in valid_terminals:
+                if obj in self.symbols():
+                    return self.symbol_to_terminal[obj]
+                term = Terminal()
+                self.add(obj, term)
+                return term
+            elif obj in valid_non_terminals:
+                if obj in self.symbols():
+                    return self.symbol_to_non_terminal[obj]
+                non = NonTerminal()
+                self.add(obj, non)
+                return non
+            else:
+                raise InvalidGrammarSymbol(f"Symbol {obj} is invalid.")
+        elif isinstance(obj, Terminal):
+            if obj in self.terminals():
+                return self.terminal_to_symbol[obj]
+            symbol = self.get_available_terminal_symbol()
+            if symbol is None:
+                raise RepresentorValueError(f"Ran out of terminal symbols.")
+            self.add(symbol, obj)
+            return symbol
+        elif isinstance(obj, NonTerminal):
+            if obj in self.non_terminals():
+                return self.non_terminal_to_symbol[obj]
+            symbol = self.get_available_non_terminal_symbol()
+            if symbol is None:
+                raise RepresentorValueError(f"Ran out of non-terminal symbols.")
+            self.add(symbol, obj)
+            return symbol
         else:
-            raise InvalidGrammarSymbol(f"Symbol {symbol} is invalid.")
+            raise RepresentorTypeError(f"Invalid type: {type(obj)}.")
 
     def as_terminal_symbol(self, term: Terminal) -> str:
         return self.terminal_to_symbol[term]
@@ -86,7 +129,7 @@ class Representor:
         elif isinstance(obj, Terminal):
             return self.as_terminal_symbol(obj)
         else:
-            raise TypeError(f"Invalid argument type: {type(obj)}.")
+            raise RepresentorTypeError(f"Invalid argument type: {type(obj)}.")
 
     def as_terminal(self, symbol: str) -> Terminal:
         return self.symbol_to_terminal[symbol]
@@ -110,4 +153,4 @@ class Representor:
         elif isinstance(obj, str):
             return obj in self.symbols()
         else:
-            raise ValueError(f"Invalid argument type: {type(obj)}.")
+            raise RepresentorTypeError(f"Invalid argument type: {type(obj)}.")
