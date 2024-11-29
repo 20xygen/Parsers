@@ -1,8 +1,9 @@
 from src.grammar.utility.interface import NaiveGrammar, NaiveRule, print_grammar
-from src.grammar.utility.interface import print_naive_grammar, naive_grammar_to_grammar, input_grammar
+from src.grammar.utility.interface import print_naive_grammar, naive_grammar_to_grammar
 from src.grammar.grammar import Grammar, Rule, Terminal, NonTerminal
 from src.parsing.parser import NaiveParser
-from src.parsing.implementations.earley import EarleyParser
+from src.parsing.implementations.earley.parser import EarleyParser
+from src.parsing.implementations.earley.utils import Logger
 
 
 # Create grammar in a common way
@@ -40,8 +41,22 @@ print()
 # print()
 # print_grammar(grammar)
 
+
+# Parsing
+
 parser = EarleyParser()
-naive_parser = NaiveParser(parser)
+naive_parser = NaiveParser(parser)  # works with naive grammars and implements the class from the technical assignment
 
 naive_parser.fit(naive_grammar)
-print(naive_parser.predict("()(())"))
+
+# You can log the process of parsing
+
+# Logger.set_debug_mode(True)
+# naive_parser.representor.auto_add(parser.grammar.start)
+# Logger.set_debug_representor(naive_parser.representor)
+
+assert (naive_parser.predict("()(())") is True)
+assert (naive_parser.predict("") is True)
+assert (naive_parser.predict(")") is False)
+assert (naive_parser.predict("()(") is False)
+

@@ -20,7 +20,7 @@
         }
       ]
     },
-    "grammar_class": "Context-free",
+    "grammar_class": null,
     "tests": [
       {
         "word": "()",
@@ -85,7 +85,7 @@
         }
       ]
     },
-    "grammar_class": "Context-free",
+    "grammar_class": null,
     "tests": [
       {
         "word": "aa",
@@ -159,7 +159,7 @@
         }
       ]
     },
-    "grammar_class": "Context-free",
+    "grammar_class": null,
     "tests": [
       {
         "word": "a+a*a",
@@ -226,7 +226,7 @@
         }
       ]
     },
-    "grammar_class": "Context-free",
+    "grammar_class": null,
     "tests": [
       {
         "word": "baabaab",

@@ -2,7 +2,7 @@ from typing import Set, Dict, Tuple, Optional
 from src.grammar.grammar import Grammar, Rule
 from src.grammar.utility.representor import Representor, valid_non_terminals, valid_symbols
 from src.grammar.utility.representor import valid_non_terminals_list, valid_terminals_list
-from src.grammar.errors import InvalidTerminal, InvalidNonTerminal, InvalidGrammarSymbol
+from src.grammar.errors import InvalidNonTerminal, InvalidGrammarSymbol
 
 
 class NaiveRule:
@@ -84,6 +84,12 @@ def grammar_to_naive_grammar(grammar: Grammar, rep: Optional[Representor] = None
         rules.add(NaiveRule(left, right))
 
     return NaiveGrammar(rep.non_terminal_symbols(), rep.terminal_symbols(), 'S', rules)
+
+
+def str_rule(rule: Rule, rep: Representor):
+    ret = f"{rep.as_symbol(rule.left)} -> "
+    ret += ''.join([rep.as_symbol(obj) for obj in rule.right])
+    return ret
 
 
 def print_naive_grammar(grammar: NaiveGrammar) -> None:

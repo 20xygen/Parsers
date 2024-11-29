@@ -1,7 +1,5 @@
 from src.grammar.grammar import Grammar, Terminal
 from typing import List, Optional
-
-from src.grammar.utility import representor
 from src.grammar.utility.interface import NaiveGrammar, naive_grammar_to_grammar
 from src.grammar.utility.representor import Representor
 
@@ -77,7 +75,7 @@ class NaiveParser:  # Facade
     def fit(self, naive: NaiveGrammar) -> None:
         grammar, representor = naive_grammar_to_grammar(naive)
         self.representor = representor
-        self.representor = self.parser.fit(grammar)
+        self.parser.fit(grammar)
 
     def predict(self, word: str) -> bool:
         translated = self.__translate(word)
