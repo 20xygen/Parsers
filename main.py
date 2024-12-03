@@ -52,7 +52,7 @@ naive_parser.fit(naive_grammar)
 # You can log the process of parsing
 
 # Logger.set_debug_mode(True)
-# naive_parser.representor.auto_add(parser.grammar.start)
+# naive_parser.representor.auto_add(parser.grammar.start)  # the non-terminal added in 'fit' method
 # Logger.set_debug_representor(naive_parser.representor)
 
 assert (naive_parser.predict("()(())") is True)

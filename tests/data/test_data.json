@@ -238,7 +238,7 @@
       },
       {
         "word": "babaabb",
-        "result": true
+        "result": false
       },
       {
         "word": "baa",

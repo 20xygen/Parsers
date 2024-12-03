@@ -9,6 +9,7 @@ valid_grammar_classes = [
     "LR(k)",
     "LR(1)",
     "LR(0)",
+    "Unknown"
 ]
 
 
@@ -28,6 +29,9 @@ class GrammarClass:
 
     def __ge__(self, other):
         return self.category >= other.category
+
+    def __eq__(self, other):
+        return self.category == other.category
 
     def __str__(self):
         return valid_grammar_classes[self.category]
@@ -80,3 +84,6 @@ class NaiveParser:  # Facade
     def predict(self, word: str) -> bool:
         translated = self.__translate(word)
         return self.parser.predict(translated)
+
+    def grammar_class(self) -> GrammarClass:
+        return self.parser.grammar_class
