@@ -1,7 +1,7 @@
 from typing import Set, Dict, Tuple, Optional
 from src.grammar.grammar import Grammar, Rule
-from src.grammar.utility.representor import Representor, valid_non_terminals, valid_symbols
-from src.grammar.utility.representor import valid_non_terminals_list, valid_terminals_list
+from src.grammar.utils.representor import Representor, valid_non_terminals, valid_symbols
+from src.grammar.utils.representor import valid_non_terminals_list, valid_terminals_list
 from src.grammar.errors import InvalidNonTerminal, InvalidGrammarSymbol
 
 

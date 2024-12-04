@@ -1,5 +1,5 @@
-from src.grammar.utility.interface import NaiveGrammar, NaiveRule, print_grammar
-from src.grammar.utility.interface import print_naive_grammar, naive_grammar_to_grammar
+from src.grammar.utils.interface import NaiveGrammar, NaiveRule, print_grammar
+from src.grammar.utils.interface import print_naive_grammar, naive_grammar_to_grammar
 from src.grammar.grammar import Grammar, Rule, Terminal, NonTerminal
 from src.parsing.parser import NaiveParser
 from src.parsing.implementations.earley.parser import EarleyParser

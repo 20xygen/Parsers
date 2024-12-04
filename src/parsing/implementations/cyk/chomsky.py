@@ -1,6 +1,6 @@
 from typing import Optional, Dict, Set, Tuple, List
 from src.grammar.grammar import Grammar, Rule, NonTerminal, Terminal, GrammarSymbol
-from src.grammar.utility.interface import print_grammar
+from src.grammar.utils.interface import print_grammar
 
 
 log_mode = False

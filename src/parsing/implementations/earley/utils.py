@@ -1,6 +1,6 @@
 from src.grammar.grammar import Grammar, Rule, GrammarSymbol, Terminal, NonTerminal
 from typing import Optional, List, Dict, Set, Any
-from src.grammar.utility.representor import Representor
+from src.grammar.utils.representor import Representor
 from src.parsing.implementations.earley.situation import Situation
 
 

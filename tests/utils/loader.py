@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import List, Dict, Union, Any
 from src.grammar.grammar import Grammar
-from src.grammar.utility.interface import NaiveGrammar, NaiveRule, naive_grammar_to_grammar
+from src.grammar.utils.interface import NaiveGrammar, NaiveRule, naive_grammar_to_grammar
 from src.parsing.parser import GrammarClass
 
 

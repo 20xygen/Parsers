@@ -1,7 +1,7 @@
 from src.grammar.grammar import Grammar, Terminal
 from typing import List, Optional
-from src.grammar.utility.interface import NaiveGrammar, naive_grammar_to_grammar
-from src.grammar.utility.representor import Representor
+from src.grammar.utils.interface import NaiveGrammar, naive_grammar_to_grammar
+from src.grammar.utils.representor import Representor
 
 
 valid_grammar_classes = [
