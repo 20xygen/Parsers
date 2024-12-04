@@ -1,5 +1,5 @@
 import unittest
-from src.parsing.parser import NaiveParser, GrammarClassError
+from src.parsing.parser import NaiveParser, GrammarClassError, ParserError
 from src.parsing.implementations.earley.parser import EarleyParser
 from tests.utils.loader import test_data
 from typing import Dict, Any
@@ -17,7 +17,7 @@ class TestEarley(unittest.TestCase):
         for name, test in self.data.items():
             try:
                 self.naive.fit(test[0])
-            except GrammarClassError as e:
+            except ParserError as e:
                 self.fail(f"Test '{name}'. Parser failed on fitted stage: {e}.")
 
     def test_02_predict(self):

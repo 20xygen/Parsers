@@ -1,4 +1,4 @@
-from src.grammar.utils.interface import NaiveGrammar, NaiveRule, print_grammar
+from src.grammar.utils.interface import NaiveGrammar, NaiveRule, print_grammar, input_grammar
 from src.grammar.utils.interface import print_naive_grammar, naive_grammar_to_grammar
 from src.grammar.grammar import Grammar, Rule, Terminal, NonTerminal
 from src.parsing.parser import NaiveParser
@@ -6,6 +6,7 @@ from src.parsing.implementations.earley.parser import EarleyParser
 from src.parsing.implementations.earley.utils import EarlyLogger
 from src.parsing.implementations.cyk.chomsky import ChomskyNormalizer, set_log_mode
 from src.parsing.implementations.cyk.parser import CYKParser
+from src.parsing.utils.interface import infinite_interactive_parsing
 
 
 print('\n----- Create grammar in a common way -----\n')
@@ -32,12 +33,9 @@ print()
 
 grammar, _ = naive_grammar_to_grammar(naive_grammar)
 
-print_grammar(grammar)  # non-naive one will differ
-print()
 
-
-# Create grammar by entering text into stdin
-
+# print('\n----- Create grammar by entering -----\n')
+#
 # grammar, _ = input_grammar()
 #
 # print()
@@ -59,8 +57,6 @@ rules = {
     NaiveRule('B', 'b'),
 }
 naive_grammar = NaiveGrammar({'S', 'T', 'U', 'A', 'B'}, {'a', 'b', 'c'}, 'S', rules)
-print_naive_grammar(naive_grammar)  # you can also print a naive one
-print()
 grammar, _ = naive_grammar_to_grammar(naive_grammar)
 
 normalizer = ChomskyNormalizer()
@@ -77,8 +73,8 @@ epsilon_rule = NaiveRule('S', '')
 naive_grammar = NaiveGrammar({'S'}, {'(', ')'}, 'S', {brackets_rule, epsilon_rule})
 print_naive_grammar(naive_grammar)
 
-parser = EarleyParser()
-naive_parser = NaiveParser(parser)  # works with naive grammars and implements the class from the technical assignment
+earley = EarleyParser()
+naive_parser = NaiveParser(earley)  # works with naive grammars and implements the class from the technical assignment
 naive_parser.fit(naive_grammar)
 
 # You can log the process of parsing
@@ -95,7 +91,7 @@ assert (naive_parser.predict("()(") is False)
 
 print('\n----- Parsing. CYK algorithm -----\n')
 
-brackets_rule = NaiveRule('S', '(S)S')
+brackets_rule = NaiveRule('S', 'S(S)')
 epsilon_rule = NaiveRule('S', '')
 naive_grammar = NaiveGrammar({'S'}, {'(', ')'}, 'S', {brackets_rule, epsilon_rule})
 print_naive_grammar(naive_grammar)
@@ -105,6 +101,11 @@ naive = NaiveParser(cyk)
 naive.fit(naive_grammar)
 
 assert (naive_parser.predict("()(())") is True)
-assert (naive_parser.predict("") is True)
-assert (naive_parser.predict(")") is False)
-assert (naive_parser.predict("()(") is False)
+assert (naive_parser.predict("()") is True)
+assert (naive_parser.predict("(") is False)
+assert (naive_parser.predict(")(") is False)
+
+
+print('\n----- Parsing. Interactive -----\n')
+
+infinite_interactive_parsing(CYKParser, False)  # choose parser class (EarleyParser or CYKParser)

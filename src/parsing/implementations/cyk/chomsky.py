@@ -213,16 +213,6 @@ class EpsilonProducingEraser(Handler, ProduceAnalyzer):
                 right: Tuple[GrammarSymbol, ...] = tuple([sym for sym in rule.right if sym != non])
                 rules_to_check.add(Rule(rule.left, right))
 
-        for added in rules_to_check:
-            if added in dependencies.keys():  # process only new rules
-                continue
-            dependencies[added] = set()
-            for non in added.right:
-                dependencies[added].add(non)
-                if non not in reverse.keys():
-                    reverse[non] = set()
-                reverse[non].add(added)
-
         if not produces_epsilon[rule.left] and all(produces_epsilon[non] for non in rule.right):
             produces_epsilon[rule.left] = True
 

@@ -15,10 +15,7 @@ class TestEarley(unittest.TestCase):
 
     def test_01_fit(self):
         for name, test in self.data.items():
-            try:
-                self.naive.fit(test[0])
-            except GrammarClassError as e:
-                self.fail(f"Test '{name}'. Parser failed on fitted stage: {e}.")
+            self.naive.fit(test[0])
 
     def test_02_predict(self):
         for name, test_set in self.data.items():
