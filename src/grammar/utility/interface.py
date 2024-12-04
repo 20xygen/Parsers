@@ -71,7 +71,7 @@ def grammar_to_naive_grammar(grammar: Grammar, rep: Optional[Representor] = None
         prepared_valid_non_terminals_list.remove('S')
         rep.add('S', grammar.start)
         for sym, non in zip(prepared_valid_non_terminals_list, prepared_non_terminals):
-            rep.add('S', non)
+            rep.add(sym, non)
 
         prepared_terminals = list(grammar.terminals)
         for sym, term in zip(valid_terminals_list, prepared_terminals):

@@ -2,7 +2,7 @@ from src.grammar.grammar import Grammar, Rule, GrammarSymbol, Terminal, NonTermi
 from typing import Optional, List, Dict, Set
 from src.parsing.parser import Parser, GrammarClass, ParserError
 from src.parsing.implementations.earley.situation import Situation, SituationFactory
-from src.parsing.implementations.earley.utils import a_access, a_add, Logger
+from src.parsing.implementations.earley.utils import a_access, a_add, EarlyLogger
 
 
 class EarleyParser(Parser):
@@ -178,22 +178,22 @@ class EarleyParser(Parser):
                position: int,
                word: List[Terminal]) -> bool:
         ret = False
-        Logger.print(f"\nStep {position}:", a_access(space, position))
+        EarlyLogger.print(f"\nStep {position}:", a_access(space, position))
         if word[position] in space[position].keys():
             for sit in space[position][word[position]]:
                 scanned = SituationFactory.scan(sit, word)
                 if scanned is not None:
                     a_add(a_access(space, position + 1), scanned.next_symbol(), scanned)
                     ret = True
-        Logger.print(f"Scanned prefix ({position}):", word[:position + 1])
-        Logger.print(f"After scan:", a_access(space, position + 1))
+        EarlyLogger.print(f"Scanned prefix ({position}):", word[:position + 1])
+        EarlyLogger.print(f"After scan:", a_access(space, position + 1))
         return ret
 
     def predict(self, word: List[Terminal]) -> bool:
         if self.grammar is None or self.rules is None or self.original_start is None:
             raise ParserError("Parser is not fit before prediction.")
 
-        Logger.print("Starting prediction of this word:", word)
+        EarlyLogger.print("Starting prediction of this word:", word)
 
         space: List[Dict[Optional[GrammarSymbol], Set[Situation]]] = list()
 
@@ -210,6 +210,6 @@ class EarleyParser(Parser):
 
             self.__closure(space[position + 1], everything, space)
 
-        Logger.print("\nLet's see what we have at the end:", everything, '')
+        EarlyLogger.print("\nLet's see what we have at the end:", everything, '')
 
         return self.__get_target(len(word)) in everything
